@@ -39,7 +39,7 @@ const confirmDelete = (id: React.Key | null | undefined) => {
   // }
 };
 
-const deleteReservation = async (id: React.Key | null | undefined) => {
+// const deleteReservation = async (id: React.Key | null | undefined) => {
   // const response = await service.delete(id);
   // if ((response.status = 200)) {
   //   alert('Delivery successfully deleted.');
@@ -47,7 +47,7 @@ const deleteReservation = async (id: React.Key | null | undefined) => {
   // } else {
   //   alert('Something went wrong. Please try again.');
   // }
-};
+// };
 
 // Give our default column cell renderer editing superpowers!
 const defaultColumn: Partial<ColumnDef<DeliveryData>> = {

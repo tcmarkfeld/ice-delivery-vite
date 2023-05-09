@@ -1,5 +1,6 @@
 import { Home } from './screens/Home';
-import { AllDeliveries, TableTest } from './screens/Deliveries';
+import { TableTest } from './screens/Deliveries';
+// import { AllDeliveries } from './screens/Deliveries';
 import { NavBar } from './components/Navbar';
 import { Route, Routes } from 'react-router-dom';
 

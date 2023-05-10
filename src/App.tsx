@@ -1,21 +1,50 @@
-// import { Home } from './screens/Home';
 import { TableTest } from './screens/Deliveries';
 // import { AllDeliveries } from './screens/Deliveries';
 import { NavBar } from './components/Navbar';
 import { Route, Routes } from 'react-router-dom';
-import React from 'react';
+
+import * as AuthService from './services/auth.service';
+import IUser from './types/user.type';
+import EventBus from './common/EventBus';
+
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import './screens/Home/Home.css';
 import service from './services/service';
+import { Login } from './screens/Login';
 
 export const App = () => {
+  const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+    }
+    EventBus.on('logout', logOut);
+    return () => {
+      EventBus.remove('logout', logOut);
+    };
+  }, []);
+
+  const logOut = () => {
+    AuthService.logout();
+    setCurrentUser(undefined);
+  };
+
   return (
     <div>
-      <NavBar />
-      <Routes>
-        <Route path='/' Component={Home} />
-        <Route path='/all-deliveries' Component={TableTest} />
-      </Routes>
+      {currentUser ? (
+        <>
+          <NavBar />
+          <Routes>
+            <Route path='/' Component={Home} />
+            <Route path='/all-deliveries' Component={TableTest} />
+          </Routes>
+        </>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 };
@@ -83,6 +112,18 @@ function Home() {
             };
             call();
           }
+          target.name.value = '';
+          target.phoneNumber.value = '';
+          target.address.value = '';
+          target.neighborhood.value = 'null';
+          target.startdate.value = new Date();
+          target.enddate.value = new Date();
+          target.cooler.value = 'null';
+          target.ice.value = 'null';
+          target.cooler_num.value = 1;
+          target.bag_limes.value = 0;
+          target.email.value = '';
+          target.special.value = '';
         }}
       >
         <a className='singup'>Add Delivery</a>

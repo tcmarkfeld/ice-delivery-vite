@@ -19,6 +19,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "../../nearby-nannies-web/auth"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -38,35 +38,11 @@ const myTableMeta: TableMeta<DeliveryData> = {
 
       if (deliveryID) {
         const response = await service.update(deliveryID, obj);
-        if ((response.status = 200)) {
-          // alert('Delivery successfully updated.');
-          // getDeliveries();
-        } else {
-          alert('Something went wrong. Please try again.');
+        if (response.status != 200) {
+          alert(`Error: Could not update value. ${response.status} ${response.data}`);
         }
       }
     },
-};
-
-const confirmDelete = (id: number | undefined) => {
-  if (id) {
-    let isExecuted = confirm('Are you sure to delete this reservation?');
-    if (isExecuted == true) {
-      deleteReservation(id);
-    }
-  }
-};
-
-const deleteReservation = async (id: number | undefined) => {
-  if (id) {
-    const response = await service.delete(id);
-    if ((response.status = 200)) {
-      alert('Delivery successfully deleted.');
-      // getDeliveries();
-    } else {
-      alert('Something went wrong. Please try again.');
-    }
-  }
 };
 
 // Give our default column cell renderer editing
@@ -140,6 +116,27 @@ export default function TableTest() {
     getDeliveries();
   }, []);
 
+  const confirmDelete = (id: number | undefined) => {
+    if (id) {
+      let isExecuted = confirm('Are you sure to delete this reservation?');
+      if (isExecuted == true) {
+        deleteReservation(id);
+      }
+    }
+  };
+
+  const deleteReservation = async (id: number | undefined) => {
+    if (id) {
+      const response = await service.delete(id);
+      if ((response.status = 200)) {
+        alert('Delivery successfully deleted.');
+        getDeliveries();
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    }
+  };
+
   const columns = React.useMemo<ColumnDef<DeliveryData>[]>(
     () => [
       {
@@ -206,12 +203,6 @@ export default function TableTest() {
             header: 'Special Instructions',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
-          // {
-          //   header: 'ID',
-          //   id: 'id',
-          //   accessorKey: 'id',
-          //   footer: (props: { column: { id: any } }) => props.column.id,
-          // },
         ],
       },
     ],
@@ -250,7 +241,7 @@ export default function TableTest() {
   });
 
   return (
-    <div className='p-4 overflow-x-scroll h-screen'>
+    <div className='p-4 overflow-x-scroll h-screen bg-lightgrey'>
       <div className='h-2' />
       <table className='text-black'>
         <thead>

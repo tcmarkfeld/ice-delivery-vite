@@ -7,7 +7,7 @@ import './Navbar.css';
 const NavBar = () => {
   return (
     <>
-      <div className='flex flex-row items-center text-black bg-grey-200 h-24 w-full'>
+      <div className='flex flex-row items-center text-black bg-white h-24 w-full'>
         <img className='w-15 h-20 m-5 rounded-md' src={Logo} alt='Logo' />
         <ul className='flex flex-row'>
           <li>
@@ -25,7 +25,7 @@ const NavBar = () => {
           </li>
         </ul>
       </div>
-      <hr className='text-black' />
+      <hr className='text-primary' />
     </>
   );
 };

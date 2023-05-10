@@ -17,10 +17,6 @@ class DataService {
     return http.delete(`/delivery/delete/${id}`);
   }
 
-  login(email: string, password: string) {
-    return http.get(`/auth/user/login/${email}/${password}`);
-  }
-
   verifyToken() {
     return http.get(`/auth/`);
   }

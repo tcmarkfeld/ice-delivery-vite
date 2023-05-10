@@ -1,7 +1,7 @@
 import service from '../../services/service';
 
 export type DeliveryData = {
-  id: number;
+  id?: number;
   start_date: Date;
   end_date: Date;
   cooler_size: string;
@@ -13,9 +13,11 @@ export type DeliveryData = {
   bag_limes: number;
   customer_email: string;
   neighborhood: number;
-  neighborhood_name: string;
+  neighborhood_name?: string;
+  neighborhood_id?: number;
   special_instructions: string;
   subRows?: DeliveryData[];
+  [key: string]: any;
 };
 
 var i = -1;
@@ -36,6 +38,7 @@ const newDelivery = (ordered_array: any): DeliveryData => {
     special_instructions: ordered_array[i].special_instructions,
     neighborhood: ordered_array[i].neighborhood,
     neighborhood_name: ordered_array[i].neighborhood_name,
+    neighborhood_id: ordered_array[i].neighborhood_id,
   };
 };
 

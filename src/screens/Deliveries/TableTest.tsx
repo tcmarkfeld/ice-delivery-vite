@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-//
 import '../../index.css';
 
-//
 import {
-  // Column,
-  // Table,
   ColumnDef,
   useReactTable,
   getCoreRowModel,
@@ -22,34 +18,52 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
-    updateData: (rowIndex: number, columnId: string, value: unknown) => () => void;
+    updateData: (rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => () => void;
   }
 }
 const myTableMeta: TableMeta<DeliveryData> = {
-  updateData: (rowIndex: number, columnId: string, value: unknown) => () => {
-    console.log(value, columnId, rowIndex);
+  updateData: (_rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => async () => {
+    const deliveryID = obj.id
+    delete obj.id
+    delete obj.neighborhood_name
+    delete obj.neighborhood_id
+    
+    obj[columnId] = value
+    
+    if (deliveryID) {
+      const response = await service.update(deliveryID, obj);
+    if ((response.status = 200)) {
+      // alert('Delivery successfully updated.');
+      // getDeliveries();
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+    }
   },
 };
 
-const confirmDelete = (id: React.Key | null | undefined) => {
-  console.log(id);
-  // let isExecuted = confirm('Are you sure to delete this reservation?');
-  // if (isExecuted == true) {
-  //   deleteReservation(id);
-  // }
+const confirmDelete = (id: number | undefined) => {
+  if (id) {
+    let isExecuted = confirm('Are you sure to delete this reservation?');
+    if (isExecuted == true) {
+      deleteReservation(id);
+    }
+  }
 };
 
-// const deleteReservation = async (id: React.Key | null | undefined) => {
-  // const response = await service.delete(id);
-  // if ((response.status = 200)) {
-  //   alert('Delivery successfully deleted.');
-  //   // getDeliveries();
-  // } else {
-  //   alert('Something went wrong. Please try again.');
-  // }
-// };
+const deleteReservation = async (id: number | undefined) => {
+  if (id) {
+    const response = await service.delete(id);
+    if ((response.status = 200)) {
+      alert('Delivery successfully deleted.');
+      // getDeliveries();
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+  }
+};
 
-// Give our default column cell renderer editing superpowers!
+// Give our default column cell renderer editing
 const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue();
@@ -58,8 +72,8 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
-      table.options.meta?.updateData(index, id, value);
-      myTableMeta.updateData(index, id, value)();
+      table.options.meta?.updateData(index, id, value, table.getCoreRowModel().rows[index].original);
+      myTableMeta.updateData(index, id, value, table.getCoreRowModel().rows[index].original)();
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -68,13 +82,20 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
     }, [initialValue]);
 
     return (
+      value as string == new Date().toISOString() ? 
       <input
         className='bg-white w-28 p-2 focus:w-fit'
         value={value as string}
-        type={typeof value == Date() ? 'date' : 'text'}
+        type='date'
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
-      />
+      /> : <input
+      className='bg-white w-28 p-2 focus:w-fit'
+      value={value as string}
+      type={typeof value == Date() ? 'date' : 'text'}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={onBlur}
+    />
     );
   },
 };
@@ -145,11 +166,11 @@ export default function TableTest() {
           },
           {
             accessorKey: 'cooler_num',
-            header: 'Cooler Number',
+            header: '# of Coolers',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
           {
-            accessorKey: 'neighborhood_name',
+            accessorKey: 'neighborhood',
             header: 'Neighborhood',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
@@ -173,30 +194,12 @@ export default function TableTest() {
             header: 'Special Instructions',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
-          {
-            header: 'Delete',
-            id: 'delete',
-            accessorKey: 'id',
-
-            Cell: (tableProps: any) => (
-              <span
-                style={{
-                  cursor: 'pointer',
-                  color: 'blue',
-                  textDecoration: 'underline',
-                }}
-                onClick={() => {
-                  // ES6 Syntax use the rvalue if your data is an array.
-                  const dataCopy = [...data];
-                  // It should not matter what you name tableProps. It made the most sense to me.
-                  dataCopy.splice(tableProps.row.index, 1);
-                  setData(dataCopy);
-                }}
-              >
-                Delete
-              </span>
-            ),
-          },
+          // {
+          //   header: 'ID',
+          //   id: 'id',
+          //   accessorKey: 'id',
+          //   footer: (props: { column: { id: any } }) => props.column.id,
+          // },
         ],
       },
     ],
@@ -235,17 +238,17 @@ export default function TableTest() {
   });
 
   return (
-    <div className='p-2'>
+    <div className='p-4 overflow-x-scroll h-screen'>
       <div className='h-2' />
       <table className='text-black'>
         <thead>
           {table
             .getHeaderGroups()
-            .map((headerGroup: { id: React.Key | null | undefined; headers: any[] }) => (
+            .map((headerGroup: { id: React.Key; headers: any[] }) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(
                   (header: {
-                    id: React.Key | null | undefined;
+                    id: React.Key;
                     colSpan: number | undefined;
                     isPlaceholder: any;
                     column: { columnDef: { header: any }; getCanFilter: () => any };
@@ -271,14 +274,14 @@ export default function TableTest() {
         <tbody>
           {table
             .getRowModel()
-            .rows.map((row: { id: React.Key | null | undefined; getVisibleCells: () => any[] }) => {
+            .rows.map((row: { id: React.Key; getVisibleCells: () => any[] }) => {
               return (
                 <tr key={row.id}>
                   {row
                     .getVisibleCells()
                     .map(
                       (cell: {
-                        id: React.Key | null | undefined;
+                        id: React.Key;
                         column: { columnDef: { cell: any } };
                         getContext: () => any;
                       }) => {
@@ -290,7 +293,7 @@ export default function TableTest() {
                       },
                     )}
                   <button
-                    onClick={() => confirmDelete(row.id)}
+                    onClick={() => confirmDelete(table.getCoreRowModel().rows[parseInt(row.id.toString())].original.id)}
                     className='bg-error-400 rounded-lg px-2 py-1 m-2'
                   >
                     <FontAwesomeIcon icon={faTrashCan} />

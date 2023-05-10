@@ -24,7 +24,7 @@ function Home() {
   return (
     <div className='flex flex-row justify-center items-center my-4'>
       <form
-        className='card p-20'
+        className='card p-20 m-8'
         onSubmit={(e: React.SyntheticEvent) => {
           e.preventDefault();
           const target = e.target as typeof e.target & {
@@ -209,7 +209,7 @@ function Home() {
           </div>
         </div>
 
-        <button className='enter'>Enter</button>
+        <button className='enter'>Submit</button>
       </form>
     </div>
   );

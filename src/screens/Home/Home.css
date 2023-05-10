@@ -18,6 +18,8 @@
   background: #ced4da;
   /* box-shadow: 16px 16px 32px #c8c8c8, -16px -16px 32px #fefefe; */
   border-radius: 8px;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 select {

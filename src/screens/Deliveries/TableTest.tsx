@@ -18,28 +18,34 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
-    updateData: (rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => () => void;
+    updateData: (
+      rowIndex: number,
+      columnId: string,
+      value: unknown,
+      obj: DeliveryData,
+    ) => () => void;
   }
 }
 const myTableMeta: TableMeta<DeliveryData> = {
-  updateData: (_rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => async () => {
-    const deliveryID = obj.id
-    delete obj.id
-    delete obj.neighborhood_name
-    delete obj.neighborhood_id
-    
-    obj[columnId] = value
-    
-    if (deliveryID) {
-      const response = await service.update(deliveryID, obj);
-    if ((response.status = 200)) {
-      // alert('Delivery successfully updated.');
-      // getDeliveries();
-    } else {
-      alert('Something went wrong. Please try again.');
-    }
-    }
-  },
+  updateData:
+    (_rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => async () => {
+      const deliveryID = obj.id;
+      delete obj.id;
+      delete obj.neighborhood_name;
+      delete obj.neighborhood_id;
+
+      obj[columnId] = value;
+
+      if (deliveryID) {
+        const response = await service.update(deliveryID, obj);
+        if ((response.status = 200)) {
+          // alert('Delivery successfully updated.');
+          // getDeliveries();
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
+      }
+    },
 };
 
 const confirmDelete = (id: number | undefined) => {
@@ -72,7 +78,12 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
-      table.options.meta?.updateData(index, id, value, table.getCoreRowModel().rows[index].original);
+      table.options.meta?.updateData(
+        index,
+        id,
+        value,
+        table.getCoreRowModel().rows[index].original,
+      );
       myTableMeta.updateData(index, id, value, table.getCoreRowModel().rows[index].original)();
     };
 
@@ -81,21 +92,22 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
       setValue(initialValue);
     }, [initialValue]);
 
-    return (
-      value as string == new Date().toISOString() ? 
+    return (value as string) == new Date().toISOString() ? (
       <input
         className='bg-white w-28 p-2 focus:w-fit'
         value={value as string}
         type='date'
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
-      /> : <input
-      className='bg-white w-28 p-2 focus:w-fit'
-      value={value as string}
-      type={typeof value == Date() ? 'date' : 'text'}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={onBlur}
-    />
+      />
+    ) : (
+      <input
+        className='bg-white w-28 p-2 focus:w-fit'
+        value={value as string}
+        type={typeof value == Date() ? 'date' : 'text'}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+      />
     );
   },
 };
@@ -242,65 +254,65 @@ export default function TableTest() {
       <div className='h-2' />
       <table className='text-black'>
         <thead>
-          {table
-            .getHeaderGroups()
-            .map((headerGroup: { id: React.Key; headers: any[] }) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(
-                  (header: {
-                    id: React.Key;
-                    colSpan: number | undefined;
-                    isPlaceholder: any;
-                    column: { columnDef: { header: any }; getCanFilter: () => any };
-                    getContext: () => any;
-                  }) => {
-                    return (
-                      <th key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder ? null : (
-                          <div>
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {header.column.getCanFilter() ? (
-                              <div>{/* <Filter column={header.column} table={table} /> */}</div>
-                            ) : null}
-                          </div>
-                        )}
-                      </th>
-                    );
-                  },
-                )}
-              </tr>
-            ))}
+          {table.getHeaderGroups().map((headerGroup: { id: React.Key; headers: any[] }) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(
+                (header: {
+                  id: React.Key;
+                  colSpan: number | undefined;
+                  isPlaceholder: any;
+                  column: { columnDef: { header: any }; getCanFilter: () => any };
+                  getContext: () => any;
+                }) => {
+                  return (
+                    <th key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : (
+                        <div>
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {header.column.getCanFilter() ? (
+                            <div>{/* <Filter column={header.column} table={table} /> */}</div>
+                          ) : null}
+                        </div>
+                      )}
+                    </th>
+                  );
+                },
+              )}
+            </tr>
+          ))}
         </thead>
         <tbody>
-          {table
-            .getRowModel()
-            .rows.map((row: { id: React.Key; getVisibleCells: () => any[] }) => {
-              return (
-                <tr key={row.id}>
-                  {row
-                    .getVisibleCells()
-                    .map(
-                      (cell: {
-                        id: React.Key;
-                        column: { columnDef: { cell: any } };
-                        getContext: () => any;
-                      }) => {
-                        return (
-                          <td key={cell.id} className='bg-grey-100 w-28'>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </td>
-                        );
-                      },
-                    )}
-                  <button
-                    onClick={() => confirmDelete(table.getCoreRowModel().rows[parseInt(row.id.toString())].original.id)}
-                    className='bg-error-400 rounded-lg px-2 py-1 m-2'
-                  >
-                    <FontAwesomeIcon icon={faTrashCan} />
-                  </button>
-                </tr>
-              );
-            })}
+          {table.getRowModel().rows.map((row: { id: React.Key; getVisibleCells: () => any[] }) => {
+            return (
+              <tr key={row.id}>
+                {row
+                  .getVisibleCells()
+                  .map(
+                    (cell: {
+                      id: React.Key;
+                      column: { columnDef: { cell: any } };
+                      getContext: () => any;
+                    }) => {
+                      return (
+                        <td key={cell.id} className='bg-grey-100 w-28'>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      );
+                    },
+                  )}
+                <button
+                  onClick={() =>
+                    confirmDelete(
+                      table.getCoreRowModel().rows[parseInt(row.id.toString())].original.id,
+                    )
+                  }
+                  className='bg-error-400 rounded-lg px-2 py-1 m-2'
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </button>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <div className='h-2' />

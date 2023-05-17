@@ -79,7 +79,7 @@ function Home() {
     cooler_size: Yup.string().required().label('Cooler'),
     cooler_num: Yup.number().min(1).max(10).required().label('Cooler Number'),
     ice_type: Yup.string().required().label('Ice Type'),
-    neighborhood: Yup.object().required().label('Neighborhood'),
+    neighborhood: Yup.string().required().label('Neighborhood'),
     bag_limes: Yup.number().min(0).max(5).required().label('Limes'),
   });
 

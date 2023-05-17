@@ -1,19 +1,15 @@
 import { FormikErrors, FormikTouched } from 'formik';
-import TextInput from '../TextInput';
+import Text from '../Text';
 
 interface ErrorMessageProps {
-  error: FormikErrors<any>;
-  visible: FormikTouched<any>;
+  error: string | string[] | FormikErrors<any> | FormikErrors<any>[] | undefined;
+  visible: boolean | FormikTouched<any> | FormikTouched<any>[] | undefined;
 }
 
 function ErrorMessage({ error, visible }: ErrorMessageProps) {
   if (!visible || !error) return null;
 
-  return (
-    <TextInput width='w-max' className='text-red' label={''} type={''} placeholder={''}>
-      {error}
-    </TextInput>
-  );
+  return <Text style='text-error'>{error}</Text>;
 }
 
 export default ErrorMessage;

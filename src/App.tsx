@@ -123,6 +123,7 @@ function Home() {
             bag_limes: '0',
           }}
           validationSchema={validationSchema}
+          // @ts-ignore: Unreachable code error
           onSubmit={handleSubmit}
         >
           <div className='flex flex-col lg:flex-row'>

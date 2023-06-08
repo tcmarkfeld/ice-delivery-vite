@@ -31,7 +31,7 @@ interface NeighborhoodDropdownProps {
 }
 
 function NeighborhoodDropdown({ name, data, ...otherTextInputProps }: NeighborhoodDropdownProps) {
-  const { setFieldTouched, setFieldValue, values, errors, touched } =
+  const { setFieldValue, values, errors, touched } =
     useFormikContext<FormikValues>();
 
   useEffect(() => {

@@ -30,16 +30,18 @@ const myTableMeta: TableMeta<DeliveryData> = {
   updateData:
     (_rowIndex: number, columnId: string, value: unknown, obj: DeliveryData) => async () => {
       const deliveryID = obj.id;
-      delete obj.id;
       delete obj.neighborhood_name;
       delete obj.neighborhood_id;
 
-      obj[columnId] = value;
-
-      if (deliveryID) {
-        const response = await service.update(deliveryID, obj);
-        if (response.status != 200) {
-          alert(`Error: Could not update value. ${response.status} ${response.data}`);
+      console.log('update data', value);
+      if (obj[columnId] != value) {
+        obj[columnId] = value;
+        if (deliveryID) {
+          delete obj.id;
+          const response = await service.update(deliveryID, obj);
+          if (response.status != 200) {
+            alert(`Error: Could not update value. ${response.status} ${response.data}`);
+          }
         }
       }
     },
@@ -53,14 +55,20 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
     const [value, setValue] = React.useState(initialValue);
 
     // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = () => {
+    const onBlur = (e: any) => {
+      console.log('on blur', e);
       table.options.meta?.updateData(
         index,
         id,
         value,
         table.getCoreRowModel().rows[index].original,
       );
-      myTableMeta.updateData(index, id, value, table.getCoreRowModel().rows[index].original)();
+      myTableMeta.updateData(
+        index,
+        id,
+        e.target.value,
+        table.getCoreRowModel().rows[index].original,
+      )();
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -68,23 +76,77 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
       setValue(initialValue);
     }, [initialValue]);
 
-    return (value as string) == new Date().toISOString() ? (
-      <input
-        className='bg-white w-28 p-2 focus:w-fit'
-        value={value as string}
-        type='date'
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-      />
-    ) : (
-      <input
-        className='bg-white w-28 p-2 focus:w-fit'
-        value={value as string}
-        type={typeof value == Date() ? 'date' : 'text'}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-      />
-    );
+    if (id == 'start_date' || id == 'end_date') {
+      return (
+        <input
+          className='bg-white w-28 h-10 p-2 focus:w-fit border-0'
+          value={(value as string).slice(0, 10)}
+          type='date'
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id == 'cooler_size') {
+      return (
+        <select
+          className='bg-white w-28 p-2 h-10'
+          value={value as string}
+          onChange={(e) => [setValue(e.target.value), onBlur(e)]}
+        >
+          <option value='40 QUART'>40 QUART</option>
+          <option value='62 QUART'>62 QUART</option>
+        </select>
+      );
+    } else if (id == 'ice_type') {
+      return (
+        <select
+          className='bg-white w-28 p-2 h-10'
+          value={value as string}
+          onChange={(e) => [setValue(e.target.value), onBlur(e)]}
+        >
+          <option value='LOOSE ICE'>LOOSE ICE</option>
+          <option value='BAGGED ICE'>BAGGED ICE</option>
+        </select>
+      );
+    } else if (id == 'neighborhood') {
+      return (
+        <div onBlur={onBlur}>
+          <select
+            className='bg-white w-28 p-2 h-10'
+            value={value as string}
+            onChange={(e) => [setValue(e.target.value), onBlur(e)]}
+          >
+            <option value={value as string}>{value as string}</option>
+            <option value='1'>Ocean Hill</option>
+            <option value='2'>Corolla Light</option>
+            <option value='3'>Whalehead</option>
+            <option value='16'>Cruz Bay (Soundfront at Corolla Bay)</option>
+            <option value='15'>Monteray Shores</option>
+            <option value='14'>Buck Island</option>
+            <option value='13'>Crown Point</option>
+            <option value='12'>KLMPQ</option>
+            <option value='11'>HIJO</option>
+            <option value='10'>Section F</option>
+            <option value='4'>Currituck Club</option>
+            <option value='9'>Section D</option>
+            <option value='8'>Section C</option>
+            <option value='7'>Section B</option>
+            <option value='6'>Section A</option>
+            <option value='5'>Pine Island</option>
+          </select>
+        </div>
+      );
+    } else {
+      return (
+        <input
+          className='bg-white w-28 p-2 focus:w-fit border-0'
+          value={value as string}
+          type='text'
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onBlur}
+        />
+      );
+    }
   },
 };
 
@@ -297,7 +359,7 @@ export default function TableTest() {
                       table.getCoreRowModel().rows[parseInt(row.id.toString())].original.id,
                     )
                   }
-                  className='bg-error-400 rounded-lg px-2 py-1 m-2'
+                  className='bg-error-400 text-white rounded-lg px-2 py-1 m-2'
                 >
                   <FontAwesomeIcon icon={faTrashCan} />
                 </button>

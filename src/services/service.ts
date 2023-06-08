@@ -2,7 +2,7 @@ import http from '../http-common';
 
 class DataService {
   getAll() {
-    return http.get('/delivery/getall');
+    return http.get('/delivery/getordered');
   }
 
   create(data: any) {

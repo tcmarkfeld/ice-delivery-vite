@@ -12,9 +12,9 @@ function AppTextInput({ type, width, label, ...otherTextInputProps }: AppTextInp
     <Form.Group className={`mb-3 flex flex-col`}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
-        className={`border-2 border-primary bg-lightgrey hover:bg-lightgrey text-black text-md tracking-small ${width} h-12 rounded-lg default:[color-scheme:dark]`}
+        className={`border-2 border-primary bg-lightgrey hover:bg-lightgrey text-black text-md tracking-small ${width} h-12 rounded-lg default:[color-scheme:dark] pl-2`}
         type={type}
-        // value={placeholder}
+        autoComplete='new-password'
         {...otherTextInputProps}
       />
     </Form.Group>

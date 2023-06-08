@@ -1,23 +1,21 @@
 import { TableTest } from './screens/Deliveries';
-// import { AllDeliveries } from './screens/Deliveries';
 import { NavBar } from './components/Navbar';
 import { Route, Routes } from 'react-router-dom';
 
 import * as AuthService from './services/auth.service';
 import IUser from './types/user.type';
 import EventBus from './common/EventBus';
-import { Form, FormField } from './components/form';
+import { Form, FormField, PhoneFormField } from './components/form';
 
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import './index.css';
-import './screens/Home/Home.css';
 import service from './services/service';
 import { Login } from './screens/Login';
 import NeighborhoodDropdown from './components/NeighborhoodDropdown';
 import { coolerData, iceData, neighborhoodData } from './components/Constants/constants';
 import SubmitButton from './components/SubmitButton';
-import DropdownComponent from './components/Dropdown';
+import DropdownHTML from './components/DropdownHTML';
 
 export const App = () => {
   const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined);
@@ -59,14 +57,14 @@ function Home() {
   // These are regex expressions for form validation
   const nameRegExp = /^(?!.{126,})([\w+]{3,}\s+[\w+]{3,} ?)$/;
 
-  const phoneRegExp = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
+  const phoneRegExp = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
   const validationSchema = Yup.object().shape({
     start_date: Yup.date().required().label('Start Date'),
     end_date: Yup.date().required().label('End Date'),
     delivery_address: Yup.string().required().max(149).label('Delivery Address'),
     customer_name: Yup.string()
-      .matches(nameRegExp, 'Enter first and last name (3 character min. each)')
+      .matches(nameRegExp, 'Enter first and last name')
       .required()
       .max(75)
       .label('Name'),
@@ -108,7 +106,7 @@ function Home() {
 
   return (
     <div className='flex w-full bg-lightgrey justify-center items-center'>
-      <div className='bg-white w-fit my-10 p-8 rounded-lg'>
+      <div className='bg-white w-fit my-10 p-8 rounded-lg text-black'>
         <Form
           initialValues={{
             cooler_size: '',
@@ -127,54 +125,52 @@ function Home() {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
+          <div className='flex flex-col lg:flex-row'>
+            <div className='p-2 m-5'>
+              <FormField label='Customer Name' width='w-80' name='customer_name' type='text' />
+            </div>
+            <div className='p-2 m-5'>
+              <PhoneFormField width='w-80' name='customer_phone' />
+            </div>
+          </div>
+
+          <div className='flex flex-col items-center lg:flex-row'>
+            <div className='p-2 m-5'>
+              <FormField
+                label='Delivery Address'
+                width='w-80'
+                name='delivery_address'
+                type='text'
+              />
+            </div>
+            <div className='p-2 m-5'>
+              Neighborhood
+              <NeighborhoodDropdown data={neighborhoodData} name='neighborhood' />
+            </div>
+          </div>
+
           <div className='flex flex-col items-center justify-center text-black'>
             <div className='flex flex-col lg:flex-row'>
               <div className='p-2 m-5'>
-                <FormField label='Start Date' width='w-36' name='start_date' type='date' />
+                <FormField label='Start Date' width='w-80' name='start_date' type='date' />
               </div>
               <div className='p-2 m-5'>
-                <FormField label={'End Date'} width='w-36' name='end_date' type='date' />
+                <FormField label={'End Date'} width='w-80' name='end_date' type='date' />
               </div>
             </div>
 
             <div className='flex flex-col lg:flex-row'>
               <div className='p-2 m-5'>
-                Cooler Size
-                <DropdownComponent data={coolerData} name='cooler_size' />
+                <DropdownHTML options={coolerData} label='Cooler Size' name='cooler_size' />
               </div>
+              <div className='p-2 m-5'>
+                <DropdownHTML options={iceData} label='Ice Type' name='ice_type' />
+              </div>
+            </div>
+
+            <div className='flex flex-col lg:flex-row'>
               <div className='p-2 m-5'>
                 <FormField label='Number of Coolers' width='w-80' name='cooler_num' type='number' />
-              </div>
-            </div>
-
-            <div className='flex flex-col lg:flex-row'>
-              <div className='p-2 m-5'>
-                Ice Type
-                <DropdownComponent data={iceData} name='ice_type' />
-              </div>
-              <div className='p-2 m-5'>
-                <FormField
-                  label='Delivery Address'
-                  width='w-80'
-                  name='delivery_address'
-                  type='text'
-                />
-              </div>
-            </div>
-
-            <div className='flex flex-col lg:flex-row'>
-              <div className='p-2 m-5'>
-                <FormField label='Customer Name' width='w-80' name='customer_name' type='text' />
-              </div>
-              <div className='p-2 m-5'>
-                <FormField label='Customer Phone' width='w-80' name='customer_phone' type='text' />
-              </div>
-            </div>
-
-            <div className='flex flex-col lg:flex-row'>
-              <div className='p-2 m-5'>
-                Neighborhood
-                <NeighborhoodDropdown data={neighborhoodData} name='neighborhood' />
               </div>
               <div className='p-2 m-5'>
                 <FormField label='Bag of Limes' width='w-80' name='bag_limes' type='number' />

@@ -31,7 +31,8 @@ interface NeighborhoodDropdownProps {
 }
 
 function NeighborhoodDropdown({ name, data, ...otherTextInputProps }: NeighborhoodDropdownProps) {
-  const { setFieldValue, values, errors, touched } = useFormikContext<FormikValues>();
+  const { setFieldTouched, setFieldValue, values, errors, touched } =
+    useFormikContext<FormikValues>();
 
   useEffect(() => {
     const str = values.delivery_address.replace(/[^a-zA-Z]/g, '').toUpperCase();
@@ -79,7 +80,7 @@ function NeighborhoodDropdown({ name, data, ...otherTextInputProps }: Neighborho
   return (
     <div className='mb-4'>
       <Dropdown
-        className='bg-transparent border-primary border-2 w-80'
+        className='border-2 border-primary bg-lightgrey hover:bg-lightgrey text-black text-md tracking-small w-80 rounded-lg default:[color-scheme:dark] pl-2 z-50 absolute'
         options={data}
         onChange={(event: any) => setFieldValue(name, event.value)}
         value={values[name]}

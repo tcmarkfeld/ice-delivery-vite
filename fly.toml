@@ -1,4 +1,4 @@
-# fly.toml file generated for corollaicedelivery on 2023-05-01T18:56:28-05:00
+# fly.toml file generated for corollaicedelivery on 2023-06-07T20:12:18-04:00
 
 app = "corollaicedelivery"
 kill_signal = "SIGINT"

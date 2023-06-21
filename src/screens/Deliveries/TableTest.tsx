@@ -136,6 +136,21 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
           </select>
         </div>
       );
+    } else if (
+      id == 'bag_lemons' ||
+      id == 'bag_limes' ||
+      id == 'bag_oranges' ||
+      id == 'marg_salt'
+    ) {
+      return (
+        <input
+          className='bg-white w-16 h-10 p-2 border-0'
+          value={(value as string).slice(0, 10)}
+          type='text'
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onBlur}
+        />
+      );
     } else {
       return (
         <input
@@ -252,7 +267,22 @@ export default function TableTest() {
           },
           {
             accessorKey: 'bag_limes',
-            header: 'Bags of Limes',
+            header: 'Limes',
+            footer: (props: { column: { id: any } }) => props.column.id,
+          },
+          {
+            accessorKey: 'bag_lemons',
+            header: 'Lemons',
+            footer: (props: { column: { id: any } }) => props.column.id,
+          },
+          {
+            accessorKey: 'bag_oranges',
+            header: 'Oranges',
+            footer: (props: { column: { id: any } }) => props.column.id,
+          },
+          {
+            accessorKey: 'marg_salt',
+            header: 'Marg Salt',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
           {

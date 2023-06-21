@@ -31,8 +31,7 @@ interface NeighborhoodDropdownProps {
 }
 
 function NeighborhoodDropdown({ name, data, ...otherTextInputProps }: NeighborhoodDropdownProps) {
-  const { setFieldValue, values, errors, touched } =
-    useFormikContext<FormikValues>();
+  const { setFieldValue, values, errors, touched } = useFormikContext<FormikValues>();
 
   useEffect(() => {
     const str = values.delivery_address.replace(/[^a-zA-Z]/g, '').toUpperCase();

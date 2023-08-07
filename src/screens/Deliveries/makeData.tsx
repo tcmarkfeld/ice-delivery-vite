@@ -14,6 +14,7 @@ export type DeliveryData = {
   bag_lemons: number;
   bag_oranges: number;
   marg_salt: number;
+  tip: number;
   customer_email: string;
   neighborhood: number;
   neighborhood_name?: string;
@@ -40,6 +41,7 @@ const newDelivery = (deliveries: any): DeliveryData => {
     bag_lemons: deliveries[i].bag_lemons,
     bag_oranges: deliveries[i].bag_oranges,
     marg_salt: deliveries[i].marg_salt,
+    tip: deliveries[i].tip,
     customer_email: deliveries[i].customer_email,
     special_instructions: deliveries[i].special_instructions,
     neighborhood: deliveries[i].neighborhood,

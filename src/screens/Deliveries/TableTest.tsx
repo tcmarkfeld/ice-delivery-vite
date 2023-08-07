@@ -140,7 +140,8 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
       id == 'bag_lemons' ||
       id == 'bag_limes' ||
       id == 'bag_oranges' ||
-      id == 'marg_salt'
+      id == 'marg_salt' ||
+      id == 'tip'
     ) {
       return (
         <input
@@ -283,6 +284,11 @@ export default function TableTest() {
           {
             accessorKey: 'marg_salt',
             header: 'Marg Salt',
+            footer: (props: { column: { id: any } }) => props.column.id,
+          },
+          {
+            accessorKey: 'tip',
+            header: 'Tip',
             footer: (props: { column: { id: any } }) => props.column.id,
           },
           {

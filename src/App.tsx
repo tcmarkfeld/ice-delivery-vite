@@ -82,6 +82,7 @@ function Home() {
     bag_lemons: Yup.number().min(0).max(5).required().label('Lemons'),
     bag_oranges: Yup.number().min(0).max(5).required().label('Oranges'),
     marg_salt: Yup.number().min(0).max(5).required().label('Marg Salt'),
+    tip: Yup.number().min(0).required().label("Tip")
   });
 
   const handleSubmit = async (userInfo: any, { resetForm }: any) => {
@@ -127,6 +128,7 @@ function Home() {
             bag_lemons: '0',
             bag_oranges: '0',
             marg_salt: '0',
+            tip: '0'
           }}
           validationSchema={validationSchema}
           // @ts-ignore: Unreachable code error
@@ -177,10 +179,13 @@ function Home() {
 
             <div className='flex flex-col lg:flex-row'>
               <div className='p-2 m-5'>
-                <FormField label='Number of Coolers' width='w-80' name='cooler_num' type='number' />
+                <FormField label='Number of Coolers' width='w-40' name='cooler_num' type='number' />
               </div>
               <div className='p-2 m-5'>
-                <FormField label='Bag of Limes' width='w-80' name='bag_limes' type='number' />
+                <FormField label='Tip' width='w-40' name='tip' type='number' />
+              </div>
+              <div className='p-2 m-5'>
+                <FormField label='Bag of Limes' width='w-40' name='bag_limes' type='number' />
               </div>
             </div>
 

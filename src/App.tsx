@@ -82,7 +82,8 @@ function Home() {
     bag_lemons: Yup.number().min(0).max(5).required().label('Lemons'),
     bag_oranges: Yup.number().min(0).max(5).required().label('Oranges'),
     marg_salt: Yup.number().min(0).max(5).required().label('Marg Salt'),
-    tip: Yup.number().min(0).required().label("Tip")
+    tip: Yup.number().min(0).required().label("Tip"),
+    timestamp: Yup.date(),
   });
 
   const handleSubmit = async (userInfo: any, { resetForm }: any) => {
@@ -128,7 +129,8 @@ function Home() {
             bag_lemons: '0',
             bag_oranges: '0',
             marg_salt: '0',
-            tip: '0'
+            tip: '0',
+            timestamp: new Date()
           }}
           validationSchema={validationSchema}
           // @ts-ignore: Unreachable code error

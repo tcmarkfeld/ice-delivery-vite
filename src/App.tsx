@@ -84,7 +84,7 @@ function Home() {
     marg_salt: Yup.number().min(0).max(5).required().label('Marg Salt'),
     tip: Yup.number().min(0).required().label("Tip"),
     timestamp: Yup.date(),
-    deliverytime: Yup.number().min(1).max(12).required().label("Delivery Time"),
+    deliverytime: Yup.number().min(1).max(12).label("Delivery Time"),
   });
 
   const handleSubmit = async (userInfo: any, { resetForm }: any) => {
@@ -106,7 +106,7 @@ function Home() {
         }
       };
       call();
-      // resetForm();
+      resetForm();
     }
   };
 

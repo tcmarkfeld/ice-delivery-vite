@@ -13,7 +13,7 @@ import './index.css';
 import service from './services/service';
 import { Login } from './screens/Login';
 import NeighborhoodDropdown from './components/NeighborhoodDropdown';
-import { coolerData, iceData, neighborhoodData } from './components/Constants/constants';
+import { coolerData, iceData, neighborhoodData, timeData } from './components/Constants/constants';
 import SubmitButton from './components/SubmitButton';
 import DropdownHTML from './components/DropdownHTML';
 
@@ -84,6 +84,7 @@ function Home() {
     marg_salt: Yup.number().min(0).max(5).required().label('Marg Salt'),
     tip: Yup.number().min(0).required().label("Tip"),
     timestamp: Yup.date(),
+    deliverytime: Yup.number().min(1).max(12).required().label("Delivery Time"),
   });
 
   const handleSubmit = async (userInfo: any, { resetForm }: any) => {
@@ -105,7 +106,7 @@ function Home() {
         }
       };
       call();
-      resetForm();
+      // resetForm();
     }
   };
 
@@ -130,7 +131,9 @@ function Home() {
             bag_oranges: '0',
             marg_salt: '0',
             tip: '0',
-            timestamp: new Date()
+            timestamp: new Date(),
+            deliverytime: "0",
+            dayornight: "",
           }}
           validationSchema={validationSchema}
           // @ts-ignore: Unreachable code error
@@ -200,6 +203,15 @@ function Home() {
               </div>
               <div className='p-2 m-5'>
                 <FormField label='Marg Salt' width='w-40' name='marg_salt' type='number' />
+              </div>
+            </div>
+
+            <div className='flex flex-col lg:flex-row'>
+              <div className='p-2 m-5'>
+                <FormField label='Delivery Time (optional)' width='w-80' type='number' name='deliverytime' />
+              </div>
+              <div className='p-2 m-5'>
+                <DropdownHTML options={timeData} label='AM/PM' name='dayornight' />
               </div>
             </div>
 

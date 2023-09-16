@@ -1,11 +1,17 @@
 export const coolerData = [
   { label: '40 Quart', value: '40 Quart' },
   { label: '62 Quart', value: '62 Quart' },
+  { label: 'Big ass 200 Qt', value: 'Big ass 200 Qt' },
 ];
 
 export const iceData = [
   { label: 'Loose ice', value: 'Loose ice' },
   { label: 'Bagged ice', value: 'Bagged ice' },
+];
+
+export const timeData = [
+  { label: "AM", value: 'AM' },
+  { label: "PM", value: 'PM' },
 ];
 
 export const neighborhoodData = [

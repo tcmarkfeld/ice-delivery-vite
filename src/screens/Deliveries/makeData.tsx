@@ -20,6 +20,8 @@ export type DeliveryData = {
   neighborhood_name?: string;
   neighborhood_id?: number;
   special_instructions: string;
+  deliverytime?: number;
+  dayornight?: string;
   subRows?: DeliveryData[];
   [key: string]: any;
 };
@@ -47,6 +49,8 @@ const newDelivery = (deliveries: any): DeliveryData => {
     neighborhood: deliveries[i].neighborhood,
     neighborhood_name: deliveries[i].neighborhood_name,
     neighborhood_id: deliveries[i].neighborhood_id,
+    deliverytime: deliveries[i].deliverytime,
+    dayornight: deliveries[i].dayornight,
   };
 };
 

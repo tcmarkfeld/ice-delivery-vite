@@ -1,6 +1,7 @@
 export const coolerData = [
   { label: '40 Quart', value: '40 Quart' },
   { label: '62 Quart', value: '62 Quart' },
+  { label: 'Big ass 200 Qt', value: 'Big ass 200 Qt' },
 ];
 
 export const iceData = [
@@ -8,11 +9,18 @@ export const iceData = [
   { label: 'Bagged ice', value: 'Bagged ice' },
 ];
 
+export const timeData = [
+  { label: "AM", value: 'AM' },
+  { label: "PM", value: 'PM' },
+];
+
 export const neighborhoodData = [
   { label: 'Ocean Hill', value: '1' },
   { label: 'Corolla Light', value: '2' },
   { label: 'Whalehead', value: '3' },
   { label: 'Whalehead Right', value: '18' },
+  { label: "WHC South Lawn", value: '20' },
+  { label: "WHC North Lawn", value: '21' },
   { label: 'Cruz Bay (Soundfront at Corolla Bay)', value: '19' },
   { label: 'Monteray Shores', value: '17' },
   { label: 'Buck Island', value: '16' },
@@ -287,6 +295,7 @@ export const oceanHill = [
   'IONIANLN',
   'IONIANLANE',
   'ADRIATICAVE',
+  'PERSIMMON',
   'PERSIMMONST',
   'PERSIMMONSTREET',
   'SCHOOLHOUSELN',

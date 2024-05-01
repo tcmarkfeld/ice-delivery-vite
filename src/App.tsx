@@ -107,8 +107,8 @@ function Home() {
   };
 
   return (
-    <div className='flex w-full bg-lightgrey justify-center items-center'>
-      <div className='bg-white w-fit my-10 p-8 rounded-lg'>
+    <div className='flex w-full bg-white justify-center items-center'>
+      <div className='bg-lightgrey w-fit my-10 p-8 rounded-lg'>
         <Form
           initialValues={{
             cooler_size: '',

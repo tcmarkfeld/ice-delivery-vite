@@ -7,7 +7,7 @@ import './Navbar.css';
 const NavBar = () => {
   return (
     <>
-      <div className='flex flex-row items-center text-black bg-white h-24 w-full'>
+      <div className='flex flex-row items-center text-black bg-lightgrey h-fit w-full'>
         <img className='w-15 h-20 m-5 rounded-md' src={Logo} alt='Logo' />
         <ul className='flex flex-row'>
           <li>

@@ -70,7 +70,7 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
 
     return (value as string) == new Date().toISOString() ? (
       <input
-        className='bg-white w-28 p-2 focus:w-fit'
+        className='bg-white w-fit pl-2 pb-2 pt-2 focus:w-fit'
         value={value as string}
         type='date'
         onChange={(e) => setValue(e.target.value)}
@@ -78,7 +78,7 @@ const defaultColumn: Partial<ColumnDef<DeliveryData>> = {
       />
     ) : (
       <input
-        className='bg-white w-28 p-2 focus:w-fit'
+        className='bg-white w-fit pl-2 pb-2 pt-2 focus:w-fit'
         value={value as string}
         type={typeof value == Date() ? 'date' : 'text'}
         onChange={(e) => setValue(e.target.value)}

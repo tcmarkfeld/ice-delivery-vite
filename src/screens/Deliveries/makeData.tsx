@@ -48,7 +48,7 @@ export async function makeData() {
 
   const ordered_array = deliveries.sort(
     (a: { start_date: Date }, b: { start_date: Date }) =>
-      new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+      new Date(a.start_date).getDate() - new Date(b.start_date).getDate(),
   );
 
   const makeDataLevel = (): DeliveryData[] => {
